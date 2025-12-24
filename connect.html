@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>链接我 - Leo Bai</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #05070a;
+            color: white;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* 模拟背景：城市夜景模糊图 */
+        .bg-container {
+            position: fixed;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.2) blur(10px);
+            z-index: -2;
+        }
+
+        /* 世界地图叠加层 */
+        .map-overlay {
+            position: fixed;
+            inset: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/world-map.png');
+            opacity: 0.15;
+            filter: invert(1) sepia(1) saturate(5) hue-rotate(10deg);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* 渐变发光效果 */
+        .glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(29, 78, 216, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: -1;
+        }
+
+        /* 玻璃卡片样式 */
+        .glass-card {
+            background: rgba(13, 17, 23, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(20, 25, 35, 0.8);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <!-- 背景装饰 -->
+    <div class="bg-container"></div>
+    <div class="map-overlay"></div>
+    <div class="glow"></div>
+
+    <!-- 主体内容 -->
+    <main class="w-full max-w-2xl px-6 relative z-10">
+        
+        <!-- 顶部导航/标题 -->
+        <header class="mb-10">
+            <a href="#" class="flex items-center text-sm text-gray-400 hover:text-white transition-colors mb-6 group">
+                <svg class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                返回首页
+            </a>
+            <h1 class="text-4xl font-bold mb-3 flex items-center">
+                链接我<span class="text-blue-500 ml-1">.</span>
+            </h1>
+            <p class="text-gray-400 text-base">
+                随时欢迎交流 AI 落地、跨境增长或职业发展。
+            </p>
+        </header>
+
+        <!-- 联系方式列表容器 -->
+        <div class="space-y-4">
+            
+            <!-- 微信卡片 -->
+            <div class="glass-card flex items-center justify-between p-5 rounded-3xl cursor-pointer">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-[#1aad19]/20 rounded-2xl flex items-center justify-center mr-5">
+                        <svg class="w-7 h-7 text-[#1aad19]" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8.38 4.402c-4.14 0-7.5 3.018-7.5 6.736 0 2.016 1 3.822 2.574 5.094l-.654 2.41 2.37-1.18c.96.284 1.99.434 3.07.434.34 0 .68-.016 1.01-.05a6.416 6.416 0 0 1-.15-1.38c0-3.53 3.04-6.39 6.78-6.39.4 0 .79.032 1.17.094C16.2 6.942 12.69 4.402 8.38 4.402zm3.36 3.124a.944.944 0 0 1 .94.94.944.944 0 0 1-.94.94.944.944 0 0 1-.94-.94.944.944 0 0 1 .94-.94zm-5.4 0a.944.944 0 0 1 .94.94.944.944 0 0 1-.94.94.944.944 0 0 1-.94-.94.944.944 0 0 1 .94-.94zM18.14 11.53c-3.1 0-5.63 2.26-5.63 5.05 0 1.51.75 2.87 1.93 3.82l-.49 1.8 1.78-.88c.72.21 1.5.33 2.31.33 3.1 0 5.63-2.26 5.63-5.05 0-2.79-2.52-5.05-5.63-5.05zm-2.2 2.34a.71.71 0 0 1 .71.71.71.71 0 0 1-.71.71.71.71 0 0 1-.71-.71.71.71 0 0 1 .71-.71zm4.2 0a.71.71 0 0 1 .71.71.71.71 0 0 1-.71.71.71.71 0 0 1-.71-.71.71.71 0 0 1 .71-.71z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-white text-lg">微信 (WeChat)</h3>
+                        <p class="text-sm text-gray-400">ID: Leobai825</p>
+                    </div>
+                </div>
+                <div class="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs text-gray-400 hover:text-white transition-colors">
+                    点击扫码
+                </div>
+            </div>
+
+            <!-- Twitter/X 卡片 -->
+            <div class="glass-card flex items-center justify-between p-5 rounded-3xl cursor-pointer">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center mr-5 border border-white/10">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-white text-lg">推特 (X / Twitter)</h3>
+                        <p class="text-sm text-gray-400">@Leobai825 | 流量实验与思考</p>
+                    </div>
+                </div>
+                <div class="text-gray-500 hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Email 卡片 -->
+            <div class="glass-card flex items-center justify-between p-5 rounded-3xl cursor-pointer">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-blue-600/20 rounded-2xl flex items-center justify-center mr-5">
+                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-white text-lg">邮箱 (Email)</h3>
+                        <p class="text-sm text-gray-400">ngocxuanbach8@gmail.com</p>
+                    </div>
+                </div>
+                <div class="text-gray-500 hover:text-blue-500 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                    </svg>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
