@@ -31,16 +31,16 @@
             height: 100%;
             object-fit: cover;
             /* 保持科技蓝全息风格滤镜 */
-            filter: grayscale(100%) brightness(0.6) contrast(1.5);
+            filter: brightness(0.6) contrast(1.5);
             mix-blend-mode: luminosity; 
-            opacity: 0.5;
+            opacity: 0.7;
         }
 
         /* 全局深色遮罩：防止背景太花影响文字阅读 */
         .bg-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(6, 7, 10, 0.85); /* 0.85 不透明度，可根据需要调整深浅 */
+            background: rgba(6, 7, 10, 0.7); /* 0.85 不透明度，可根据需要调整深浅 */
         }
 
         /* 全局网格纹理 */
