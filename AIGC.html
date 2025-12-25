@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Architecture | 智能工作流</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+SC:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            background-color: #06070a;
+            color: white;
+            overflow: hidden; /* 整体页面禁止滚动 */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ---------------- 上半部：AI 插图区域 ---------------- */
+        .hero-section {
+            height: 40vh; /* 稍微缩减高度，给下方更多空间 */
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            background: #111827;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            z-index: 10;
+        }
+
+        .hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            /* 稍微加一点紫色/蓝色滤镜增强科技感 */
+            filter: contrast(1.1) brightness(0.9);
+            transition: transform 10s ease;
+        }
+        
+        .hero-section:hover .hero-img {
+            transform: scale(1.05);
+        }
+
+        /* 网格装饰层 */
+        .grid-overlay {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        /* ---------------- 下半部：知识方块滚动区 ---------------- */
+        .content-section {
+            flex-grow: 1;
+            position: relative;
+            overflow-y: auto; /* 允许垂直滚动 */
+            background: radial-gradient(circle at top, #0f172a 0%, #06070a 80%);
+            /* 自定义滚动条样式 */
+            scrollbar-width: thin;
+            scrollbar-color: #1e293b #06070a;
+        }
+
+        .content-section::-webkit-scrollbar {
+            width: 6px;
+        }
+        .content-section::-webkit-scrollbar-track {
+            background: #06070a;
+        }
+        .content-section::-webkit-scrollbar-thumb {
+            background-color: #1e293b;
+            border-radius: 20px;
+        }
+
+        .cards-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 4vw;
+            display: grid;
+            /* 响应式网格：大屏3列，中屏2列，小屏1列 */
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 1.5rem;
+        }
+
+        /* ---------------- 方块样式 ---------------- */
+        .tech-block {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            group: hover;
+        }
+
+        /* 悬停高亮效果 */
+        .tech-block:hover {
+            transform: translateY(-5px);
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(16, 185, 129, 0.3); /* 绿色边框呼应AI/Matrix */
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.7);
+        }
+
+        /* 内部装饰线 */
+        .tech-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.5), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        .tech-block:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* ---------------- 动画点缀 ---------------- */
+        .pulse-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #10b981; /* 翠绿色 */
+            border-radius: 50%;
+            box-shadow: 0 0 15px #10b981;
+            animation: pulse 3s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 1. 上半部：AI 视觉插图 -->
+    <section class="hero-section flex flex-col items-center justify-center">
+        <!-- AI 背景图 -->
+        <div class="absolute inset-0 z-0">
+            <!-- 使用抽象的神经网络/光纤图片 -->
+            <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1965&auto=format&fit=crop" alt="AI Neural Network" class="hero-img">
+            <div class="absolute inset-0 bg-slate-900/60 mix-blend-multiply"></div>
+        </div>
+        
+        <!-- 科技网格 -->
+        <div class="grid-overlay z-0"></div>
+
+        <!-- 呼吸点 (模拟节点连接) -->
+        <div class="pulse-dot" style="top: 20%; left: 15%;"></div>
+        <div class="pulse-dot" style="top: 70%; left: 85%; animation-delay: 1s;"></div>
+        <div class="pulse-dot" style="top: 40%; left: 60%; animation-delay: 2s;"></div>
+
+        <!-- 标题 -->
+        <div class="relative z-10 text-center">
+            <div class="inline-block glass-card px-8 py-3 rounded-full border border-emerald-500/20 bg-black/20 backdrop-blur-md">
+                <h1 class="text-3xl font-bold tracking-widest text-white">AI WORKFLOW</h1>
+            </div>
+            <p class="text-xs text-emerald-400 mt-3 uppercase tracking-[0.4em] font-bold">Automation & Intelligence</p>
+        </div>
+        
+        <!-- 返回导航 -->
+        <a href="index.html" class="absolute top-6 left-6 z-20 text-sm text-gray-400 hover:text-white flex items-center gap-2 transition-colors group">
+            <div class="p-1.5 rounded-full bg-white/5 group-hover:bg-white/10 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            </div>
+            <span>Back to Core</span>
+        </a>
+    </section>
+
+    <!-- 2. 下半部：知识方块矩阵 -->
+    <section class="content-section">
+        <div class="cards-container" id="gridTrack">
+            <!-- JS 生成内容 -->
+        </div>
+        
+        <!-- 底部版权或装饰 -->
+        <div class="text-center pb-8 pt-4">
+            <p class="text-[10px] text-slate-600 uppercase tracking-widest">System Operational • v2.0.4</p>
+        </div>
+    </section>
+
+    <script>
+        // 定义 AI 相关的知识模块数据
+        const aiModules = [
+            {
+                tag: 'LLM CORE',
+                title: 'Prompt Engineering',
+                desc: '掌握结构化提示词设计（CoT, Few-Shot），精准控制大模型输出质量，建立标准化交互协议。',
+                icon: 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z'
+            },
+            {
+                tag: 'AGENTS',
+                title: 'AutoGPT Agents',
+                desc: '构建自主智能体网络。利用 LangChain 实现任务拆解、工具调用与长期记忆，实现全自动工作流。',
+                icon: 'M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z'
+            },
+            {
+                tag: 'VISUAL',
+                title: 'Stable Diffusion',
+                desc: '本地化部署 AI 绘图工作台。深入 ControlNet 控图与 LoRA 模型训练，实现产品图与素材的商业级产出。',
+                icon: 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'
+            },
+            {
+                tag: 'DATA',
+                title: 'RAG Knowledge',
+                desc: '检索增强生成（RAG）系统搭建。将私有知识库向量化，解决模型幻觉问题，打造企业级专属问答大脑。',
+                icon: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4'
+            },
+            {
+                tag: 'CODE',
+                title: 'Python Automation',
+                desc: '利用 Copilot 辅助编写自动化脚本。爬虫数据清洗、API 接口对接与 Excel 批处理，解放重复劳动。',
+                icon: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4'
+            },
+            {
+                tag: 'FUTURE',
+                title: 'Multimodal Models',
+                desc: '多模态模型应用前沿。探索 GPT-4V 与 Gemini 在视频理解、语音交互场景下的创新落地应用。',
+                icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
+            }
+        ];
+
+        const track = document.getElementById('gridTrack');
+
+        function renderGrid() {
+            track.innerHTML = aiModules.map((item, index) => `
+                <div class="tech-block group cursor-pointer" onclick="alert('Module: ${item.title} - Coming Soon')">
+                    <!-- 顶部标签与图标 -->
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-[10px] font-bold px-2 py-1 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 tracking-wider">
+                            ${item.tag}
+                        </span>
+                        <div class="text-slate-500 group-hover:text-emerald-400 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="${item.icon}"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <!-- 标题 -->
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-emerald-300 transition-colors">${item.title}</h3>
+                    
+                    <!-- 描述 -->
+                    <p class="text-xs text-slate-400 leading-relaxed flex-grow">
+                        ${item.desc}
+                    </p>
+                    
+                    <!-- 底部箭头 -->
+                    <div class="mt-4 flex justify-end">
+                        <span class="text-xs text-slate-600 group-hover:text-white transition-colors flex items-center gap-1">
+                            Details 
+                            <svg class="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        renderGrid();
+    </script>
+</body>
+</html>
