@@ -17,7 +17,7 @@
             flex-direction: column;
         }
 
-        /* ---------------- 上半部：世界地图 (保持不变) ---------------- */
+        /* ---------------- 上半部：世界地图 ---------------- */
         .map-section {
             height: 45vh;
             position: relative;
@@ -45,7 +45,7 @@
             pointer-events: none;
         }
 
-        /* ---------------- 下半部：静态三卡片布局 (修改) ---------------- */
+        /* ---------------- 下半部：静态三卡片布局 ---------------- */
         .cards-section {
             height: 55vh;
             position: relative;
@@ -64,9 +64,8 @@
             max-width: 1400px; /* 最大宽度限制 */
         }
 
-        /* ---------------- 卡片样式 (修改) ---------------- */
+        /* ---------------- 卡片样式 ---------------- */
         .knowledge-card {
-            /* 移除固定宽度，改为自适应 */
             width: 100%; 
             height: 340px;
             background: rgba(15, 23, 42, 0.4);
@@ -79,7 +78,6 @@
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
             overflow: hidden;
-            /* 初始状态：不透明，无旋转 */
             opacity: 1;
             transform: translateY(0);
         }
@@ -108,7 +106,7 @@
             color: rgba(59, 130, 246, 0.1);
         }
 
-        /* ---------------- 动画点缀 (保持) ---------------- */
+        /* ---------------- 动画点缀 ---------------- */
         .pulse-dot {
             position: absolute;
             width: 8px;
@@ -165,28 +163,32 @@
     </section>
 
     <script>
-        // 定义 3 个核心模块数据 (不再是 100 个)
+        // 定义 3 个核心模块数据
         const modules = [
             {
                 id: '01',
                 category: 'STRATEGY',
                 title: 'Global Expansion',
                 desc: '深入剖析跨境电商的市场准入策略。通过数据驱动的选品逻辑与本地化运营模型，构建不可复制的品牌护城河。',
-                time: 'Core Module'
+                time: 'Core Module',
+                // 【修改点 1】在这里添加了跳转链接
+                link: 'https://www.notion.so/TEST-2d4caadcda2180039c76f5ad183792a1?source=copy_link'
             },
             {
                 id: '02',
                 category: 'AI TOOLS',
                 title: 'Automation Workflow',
                 desc: '利用 AIGC 技术重构内容生产与客户服务流程。实现 24/7 全天候响应与千人千面的营销触达，效率提升 500%。',
-                time: 'Tech Stack'
+                time: 'Tech Stack',
+                link: '' // 其他卡片可以留空
             },
             {
                 id: '03',
                 category: 'GROWTH',
                 title: 'Traffic & Conversion',
                 desc: '从公域流量获取到私域用户沉淀的全链路闭环。掌握 SEO、PPC 与社媒矩阵的组合拳，最大化 ROI 回报率。',
-                time: 'Data Insight'
+                time: 'Data Insight',
+                link: ''
             }
         ];
 
@@ -194,8 +196,18 @@
 
         // 渲染 3 张卡片
         function renderCards() {
-            track.innerHTML = modules.map(card => `
-                <div class="knowledge-card group cursor-pointer">
+            track.innerHTML = modules.map(card => {
+                // 【修改点 2】检查是否有链接，如果有则生成 onclick 事件
+                const clickAction = card.link 
+                    ? `onclick="window.open('${card.link}', '_blank')"` 
+                    : '';
+                
+                // 为了用户体验，如果有链接，鼠标样式更明确（虽然已经有 cursor-pointer）
+                // 并且添加 title 提示
+                const hoverTitle = card.link ? 'title="Click to open Notion notes"' : '';
+
+                return `
+                <div class="knowledge-card group cursor-pointer" ${clickAction} ${hoverTitle}>
                     <div class="card-number">${card.id}</div>
                     <div class="flex flex-col h-full z-10 relative">
                         <div class="mb-6">
@@ -209,16 +221,16 @@
                         </p>
                         <div class="mt-6 pt-6 border-t border-white/5 flex justify-between items-center text-xs text-gray-500">
                             <span class="uppercase tracking-widest text-white/30">${card.time}</span>
-                            <span class="group-hover:translate-x-1 transition-transform text-blue-400">Explore →</span>
+                            <span class="group-hover:translate-x-1 transition-transform text-blue-400">
+                                ${card.link ? 'Open Note →' : 'Explore →'}
+                            </span>
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         renderCards();
-
-        // 移除了之前的滚轮监听和动画循环，因为只有3个静态卡片
     </script>
 </body>
 </html>
