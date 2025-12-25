@@ -118,63 +118,88 @@
     </section>
 
     <!-- 3. 导航网格 (能力/故事) -->
-    <section class="py-24 px-6 max-w-6xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- 链接我 -->
-<a href="connect.html" class="glass-card flex items-center p-6 rounded-3xl group">
-    <div class="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400">
-        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-    </div>
-    <div class="ml-6 flex-grow">
-        <h3 class="text-xl font-bold mb-1">链接我 (Connect)</h3>
-        <p class="text-slate-400 text-sm">WeChat / Twitter / 流量实验</p>
-    </div>
-    <!-- 箭头图标 -->
-    <div class="text-slate-600 group-hover:text-white transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></div>
-</a>
+<section class="py-24 px-6 max-w-6xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- 1. 链接我 -->
+        <a href="connect.html" class="glass-card flex items-center p-6 rounded-3xl group">
+            <div class="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                </svg>
+            </div>
+            <div class="ml-6 flex-grow">
+                <h3 class="text-xl font-bold mb-1">链接我 (Connect)</h3>
+                <p class="text-slate-400 text-sm">WeChat / Twitter / 流量实验</p>
+            </div>
+            <!-- 统一箭头 -->
+            <div class="text-slate-600 group-hover:text-white transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </div>
+        </a>
 
-<!-- 我的业务 -->
-<div class="glass-card flex items-center p-6 rounded-3xl group cursor-default">
-    <div class="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400">
-        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-    </div>
-    <div class="ml-6 flex-grow">
-        <h3 class="text-xl font-bold mb-1">我的业务 (Business)</h3>
-        <p class="text-slate-400 text-sm">AI 咨询 / 增长策略 / 资源合作</p>
-    </div>
-</div>
-
-<!-- 美股投资 (已修复并添加跳转) -->
-<a href="U.S.Stocks.html" class="glass-card flex items-center p-6 rounded-3xl group"> 
-    <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-400">
-        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
-    </div>
-    <div class="ml-6 flex-grow">
-        <h3 class="text-xl font-bold mb-1">美股投资 (U.S.Stocks)</h3>
-        <p class="text-slate-400 text-sm">能力架构 / AI 工作流底层逻辑</p>
-    </div>
-    <!-- 添加了箭头图标，表示可点击跳转 -->
-    <div class="text-slate-600 group-hover:text-white transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></div>
-</a>
-
-<!-- 卡片 4: 我的故事 -->
-            <a href="#" class="glass-card flex items-center p-6 rounded-3xl group">
-                <div class="flex-shrink-0 w-14 h-14 bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-400">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                </div>
-                <div class="ml-6 flex-grow">
-                    <h3 class="text-xl font-bold text-white mb-1">我的故事 (Story)</h3>
-                    <p class="text-slate-400 text-sm">从财务审计到 26w 店铺操盘手</p>
-                </div>
-                <div class="text-slate-600 group-hover:text-white transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </div>
-            </a>
-            
+        <!-- 2. 我的业务 -->
+        <!-- 注意：此处保持为div，若需点击跳转请将 div 改为 a 并添加 href -->
+        <div class="glass-card flex items-center p-6 rounded-3xl group cursor-default">
+            <div class="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+            <div class="ml-6 flex-grow">
+                <h3 class="text-xl font-bold mb-1">我的业务 (Business)</h3>
+                <p class="text-slate-400 text-sm">AI 咨询 / 增长策略 / 资源合作</p>
+            </div>
+            <!-- 统一箭头 (新增) -->
+            <div class="text-slate-600 group-hover:text-white transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
             </div>
         </div>
-    </section>
 
+        <!-- 3. 美股投资 -->
+        <a href="U.S.Stocks.html" class="glass-card flex items-center p-6 rounded-3xl group"> 
+            <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-400">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                </svg>
+            </div>
+            <div class="ml-6 flex-grow">
+                <h3 class="text-xl font-bold mb-1">美股投资 (U.S.Stocks)</h3>
+                <p class="text-slate-400 text-sm">能力架构 / AI 工作流底层逻辑</p>
+            </div>
+            <!-- 统一箭头 -->
+            <div class="text-slate-600 group-hover:text-white transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </div>
+        </a>
+
+        <!-- 4. 我的故事 -->
+        <a href="#" class="glass-card flex items-center p-6 rounded-3xl group">
+            <div class="w-14 h-14 bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-400">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                </svg>
+            </div>
+            <div class="ml-6 flex-grow">
+                <h3 class="text-xl font-bold text-white mb-1">我的故事 (Story)</h3>
+                <p class="text-slate-400 text-sm">从财务审计到 26w 店铺操盘手</p>
+            </div>
+            <!-- 统一箭头 -->
+            <div class="text-slate-600 group-hover:text-white transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </div>
+        </a>
+
+    </div>
+</section>
     <!-- 4. 项目展示区 -->
     <section id="projects" class="py-24 px-6 space-y-32">
         <header class="text-center mb-16">
