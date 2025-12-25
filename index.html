@@ -145,43 +145,16 @@
 </head>
 <body>
 
-    <!-- 1. 全屏固定背景层 (新增) -->
+    <!-- 1. 全屏固定背景层 (保留，否则背景全是白的看不见字) -->
     <div class="fixed-global-bg">
-        <!-- 地图图片 -->
         <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" alt="Global Background">
-        <!-- 深色遮罩 -->
         <div class="bg-overlay"></div>
-        <!-- 科技网格 -->
         <div class="grid-overlay"></div>
     </div>
 
-    <!-- 2. 上半部：雷达扫描区 (移除图片，仅保留动态元素) -->
-    <section class="map-section flex flex-col items-center justify-center">
-        <!-- 科技氛围层 -->
-        <div class="absolute inset-0 bg-radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%) pointer-events-none"></div>
+    <!-- 已删除：原 Step 2. 上半部：雷达扫描区 -->
 
-        <!-- 雷达扫描动效 -->
-        <div class="radar-scan"></div>
-
-        <!-- 动态数据节点 -->
-        <!-- 北美 -->
-        <div class="pulse-dot" style="top: 35%; left: 25%;">
-            <div class="hidden md:block absolute top-4 left-4 text-[10px] text-blue-400 opacity-60 font-mono tracking-widest whitespace-nowrap">US. DATA CENTER</div>
-        </div>
-
-        <!-- 欧洲 -->
-        <div class="pulse-dot" style="top: 32%; left: 49%; animation-delay: 0.5s;"></div>
-
-        <!-- 亚洲/中国 -->
-        <div class="pulse-dot" style="top: 42%; left: 78%; animation-delay: 1s;">
-            <div class="hidden md:block absolute top-4 -left-8 text-[10px] text-blue-400 opacity-60 font-mono tracking-widest whitespace-nowrap">CN. OPERATION</div>
-        </div>
-
-        <!-- 澳洲 -->
-        <div class="pulse-dot" style="top: 70%; left: 88%; animation-delay: 1.5s;"></div>
-    </section>
-
-    <!-- 3. 导航栏 -->
+    <!-- 3. 导航栏 (保持不变) -->
     <header class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center backdrop-blur-md border-b border-white/5 bg-black/20">
         <div class="text-xl font-black tracking-tighter">
             Gabriel Li<span class="text-blue-500">.</span>
@@ -197,7 +170,8 @@
     </header>
 
     <!-- 4. Hero Section (首页) -->
-    <section id="home" class="relative -mt-20 z-10 flex flex-col items-center justify-center pt-10 px-4 text-center">
+    <!-- 修改点1：移除 -mt-20，改为 pt-32 (让内容下移，不被导航栏遮挡) -->
+    <section id="home" class="relative z-10 flex flex-col items-center justify-center pt-32 px-4 text-center">
         <!-- 头像区 -->
         <div class="relative mb-8 group">
             <div class="absolute inset-0 bg-blue-500 blur-2xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
@@ -206,7 +180,8 @@
             </div>
         </div>
 
-        <h1 class="text-6xl md:text-8xl font-black mb-6 tracking-tight">Gabriel Li</h1>
+        <!-- 修改点2：缩小字体大小 (原 text-6xl md:text-8xl -> 改为 text-4xl md:text-6xl) -->
+        <h1 class="text-4xl md:text-6xl font-black mb-6 tracking-tight">Gabriel Li</h1>
         
         <div class="flex flex-wrap justify-center items-center gap-3 text-sm md:text-base text-gray-400 mb-10 font-light tracking-widest uppercase">
             <span>⚡Gen Z</span><span class="opacity-20">|</span>
