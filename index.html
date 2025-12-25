@@ -64,20 +64,6 @@
             border-bottom: 1px solid rgba(255,255,255,0.02);
         }
 
-        /* 雷达扫描特效 (保持不变) */
-        .radar-scan {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 120vw;
-            height: 120vw;
-            background: conic-gradient(from 0deg, transparent 0deg, rgba(59, 130, 246, 0.05) 60deg, transparent 65deg);
-            border-radius: 50%;
-            animation: radar-spin 10s linear infinite;
-            pointer-events: none;
-            opacity: 0.6;
-        }
 
         @keyframes radar-spin {
             from { transform: translate(-50%, -50%) rotate(0deg); }
@@ -160,26 +146,6 @@
         <!-- 科技氛围层 -->
         <div class="absolute inset-0 bg-radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%) pointer-events-none"></div>
         
-        <!-- 雷达扫描动效 -->
-        <div class="radar-scan"></div>
-
-        <!-- 动态数据节点 -->
-        <!-- 北美 -->
-        <div class="pulse-dot" style="top: 35%; left: 25%;">
-            <div class="hidden md:block absolute top-4 left-4 text-[10px] text-blue-400 opacity-60 font-mono tracking-widest whitespace-nowrap">US. DATA CENTER</div>
-        </div>
-        
-        <!-- 欧洲 -->
-        <div class="pulse-dot" style="top: 32%; left: 49%; animation-delay: 0.5s;"></div>
-        
-        <!-- 亚洲/中国 -->
-        <div class="pulse-dot" style="top: 42%; left: 78%; animation-delay: 1s;">
-            <div class="hidden md:block absolute top-4 -left-8 text-[10px] text-blue-400 opacity-60 font-mono tracking-widest whitespace-nowrap">CN. OPERATION</div>
-        </div>
-        
-        <!-- 澳洲 -->
-        <div class="pulse-dot" style="top: 70%; left: 88%; animation-delay: 1.5s;"></div>
-    </section>
 
     <!-- 3. 导航栏 -->
     <header class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center backdrop-blur-md border-b border-white/5 bg-black/20">
