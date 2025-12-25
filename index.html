@@ -14,54 +14,105 @@
             overflow-x: hidden;
         }
 
-        /* ---------------- 上半部：世界地图 (保持不变) ---------------- */
+        /* ---------------- 上半部：世界地图 (优化版) ---------------- */
         .map-section {
-            height: 45vh;
+            height: 50vh; /* 稍微增高以容纳视觉重心 */
             position: relative;
             overflow: hidden;
-            background: radial-gradient(circle at center, #111827 0%, #06070a 100%);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            background-color: #06070a;
+            /* 关键：使用 mask-image 让地图底部平滑渐变消失，完美融合背景 */
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.02); /* 极淡的边框 */
+        }
+
+        .world-map-container {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .world-map-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            /* 调整图片风格为“科技蓝”全息感 */
+            filter: grayscale(100%) brightness(0.6) contrast(1.5);
+            mix-blend-mode: luminosity; 
+            opacity: 0.5;
+        }
+
+        /* 覆盖一层蓝色渐变，增强科技感 */
+        .tech-overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* 雷达扫描特效 */
+        .radar-scan {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120vw; /* 保证覆盖宽屏 */
+            height: 120vw;
+            background: conic-gradient(from 0deg, transparent 0deg, rgba(59, 130, 246, 0.05) 60deg, transparent 65deg);
+            border-radius: 50%;
+            animation: radar-spin 10s linear infinite;
+            pointer-events: none;
             opacity: 0.6;
-            filter: grayscale(100%) contrast(1.2) brightness(0.8);
-            mix-blend-mode: overlay; 
+        }
+
+        @keyframes radar-spin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
         .grid-overlay {
             position: absolute;
             inset: 0;
             background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
             pointer-events: none;
         } 
 
-        /* 鼠标悬停效果 */
-        .knowledge-card:hover {
-            transform: translateY(-10px); /* 稍微上浮 */
-            background: rgba(30, 41, 59, 0.7);
-            border-color: rgba(59, 130, 246, 0.5); /* 蓝色边框 */
-            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(59, 130, 246, 0.15);
+        /* ---------------- 动画点缀 (优化版) ---------------- */
+        .pulse-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #60a5fa; /* 更亮的蓝 */
+            border-radius: 50%;
+            box-shadow: 0 0 10px #3b82f6;
             z-index: 10;
         }
-
-        .card-number {
-            font-size: 3rem;
-            font-weight: 900;
+        
+        /* 波纹扩散效果 */
+        .pulse-dot::after {
+            content: '';
             position: absolute;
-            top: 20px;
-            right: 20px;
-            color: rgba(255,255,255,0.03);
-            pointer-events: none;
-            transition: color 0.3s;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px solid #60a5fa;
+            animation: ripple 2s infinite cubic-bezier(0, 0.2, 0.8, 1);
         }
-        /* 玻璃拟态卡片 */
+
+        @keyframes ripple {
+            0% { width: 0; height: 0; opacity: 1; }
+            100% { width: 600%; height: 600%; opacity: 0; }
+        }
+
+        /* ---------------- 通用卡片样式 ---------------- */
         .glass-card {
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(12px);
@@ -73,6 +124,7 @@
             border-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-5px);
             background: rgba(30, 41, 59, 0.7);
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
         /* 渐变文字 */
@@ -88,48 +140,45 @@
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #334155; }
 
-
-        /* ---------------- 动画点缀 (保持) ---------------- */
-        .pulse-dot {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: #3b82f6;
-            border-radius: 50%;
-            box-shadow: 0 0 15px #3b82f6;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(3); opacity: 0; }
-        }
-
     </style>
 </head>
 <body>
 
-
-    <!-- 1. 上半部：世界地图 -->
+    <!-- 1. 上半部：世界地图 (已更新) -->
     <section class="map-section flex flex-col items-center justify-center">
         <!-- 地图图片层 -->
-        <div class="absolute inset-0 z-0">
+        <div class="world-map-container">
             <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" alt="World Map" class="world-map-img">
-            <div class="absolute inset-0 bg-blue-900/20 mix-blend-color"></div>
         </div>
         
-        <!-- 网格装饰 -->
-        <div class="grid-overlay z-0"></div>
+        <!-- 科技氛围层 -->
+        <div class="tech-overlay"></div>
+        <div class="grid-overlay"></div>
+        
+        <!-- 雷达扫描动效 -->
+        <div class="radar-scan"></div>
 
-        <!-- 动态点 -->
-        <div class="pulse-dot" style="top: 30%; left: 20%;"></div>
-        <div class="pulse-dot" style="top: 45%; left: 50%; animation-delay: 0.5s;"></div>
-        <div class="pulse-dot" style="top: 35%; left: 80%; animation-delay: 1s;"></div>
-        <div class="pulse-dot" style="top: 60%; left: 30%; animation-delay: 1.5s;"></div>
+        <!-- 动态数据节点 -->
+        <!-- 北美 -->
+        <div class="pulse-dot" style="top: 35%; left: 25%;">
+            <div class="hidden md:block absolute top-4 left-4 text-[10px] text-blue-400 opacity-60 font-mono tracking-widest whitespace-nowrap">US. DATA CENTER</div>
+        </div>
+        
+        <!-- 欧洲 -->
+        <div class="pulse-dot" style="top: 32%; left: 49%; animation-delay: 0.5s;"></div>
+        
+        <!-- 亚洲/中国 -->
+        <div class="pulse-dot" style="top: 42%; left: 78%; animation-delay: 1s;">
+            <div class="hidden md:block absolute top-4 -left-8 text-[10px] text-blue-400 opacity-60 font-mono tracking-widest whitespace-nowrap">CN. OPERATION</div>
+        </div>
+        
+        <!-- 澳洲 -->
+        <div class="pulse-dot" style="top: 70%; left: 88%; animation-delay: 1.5s;"></div>
     </section>
    
 
-    <!-- 1. 导航栏 -->
-    <header class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center backdrop-blur-md border-b border-white/5">
+    <!-- 2. 导航栏 -->
+    <header class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center backdrop-blur-md border-b border-white/5 bg-black/20">
         <div class="text-xl font-black tracking-tighter">
             Gabriel Li<span class="text-blue-500">.</span>
         </div>
@@ -143,13 +192,12 @@
         </nav>
     </header>
 
-    <!-- 2. Hero Section (首页) -->
-    <section id="home" class="relative min-h-screen flex flex-col items-center justify-center pt-20 px-4 text-center">
+    <!-- 3. Hero Section (首页) -->
+    <section id="home" class="relative -mt-20 z-10 flex flex-col items-center justify-center pt-10 px-4 text-center">
         <!-- 头像区 -->
         <div class="relative mb-8 group">
             <div class="absolute inset-0 bg-blue-500 blur-2xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
             <div class="relative w-28 h-28 md:w-32 md:h-32 rounded-full border-2 border-white/10 p-1 backdrop-blur-sm">
-                <!-- 注意：此处使用了 raw.githubusercontent.com 链接以确保图片能正常加载 -->
                 <img src="https://raw.githubusercontent.com/GabrielLi2023/GabrielLi2023.github.io/main/avatar.jpg" alt="Avatar" class="w-full h-full rounded-full bg-slate-800 object-cover">
             </div>
         </div>
@@ -169,90 +217,86 @@
         </h2>
     </section>
 
-    <!-- 3. 导航网格 (能力/故事) -->
-<section class="py-24 px-6 max-w-6xl mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        <!-- 1. 链接我 -->
-        <a href="connect.html" class="glass-card flex items-center p-6 rounded-3xl group">
-            <div class="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
-                </svg>
-            </div>
-            <div class="ml-6 flex-grow">
-                <h3 class="text-xl font-bold mb-1">链接我 (Connect)</h3>
-                <p class="text-slate-400 text-sm">WeChat / Twitter / 流量实验</p>
-            </div>
-            <!-- 统一箭头 -->
-            <div class="text-slate-600 group-hover:text-white transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                </svg>
-            </div>
-        </a>
+    <!-- 4. 导航网格 (能力/故事) -->
+    <section class="py-24 px-6 max-w-6xl mx-auto z-10 relative">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- 1. 链接我 -->
+            <a href="connect.html" class="glass-card flex items-center p-6 rounded-3xl group">
+                <div class="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                    </svg>
+                </div>
+                <div class="ml-6 flex-grow">
+                    <h3 class="text-xl font-bold mb-1">链接我 (Connect)</h3>
+                    <p class="text-slate-400 text-sm">WeChat / Twitter / 流量实验</p>
+                </div>
+                <div class="text-slate-600 group-hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </div>
+            </a>
 
-        <!-- 2. 我的业务 -->
-        <!-- 注意：此处保持为div，若需点击跳转请将 div 改为 a 并添加 href -->
-        <div class="glass-card flex items-center p-6 rounded-3xl group cursor-default">
-            <div class="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                </svg>
+            <!-- 2. 我的业务 -->
+            <div class="glass-card flex items-center p-6 rounded-3xl group cursor-default">
+                <div class="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div class="ml-6 flex-grow">
+                    <h3 class="text-xl font-bold mb-1">我的业务 (Business)</h3>
+                    <p class="text-slate-400 text-sm">AI 咨询 / 增长策略 / 资源合作</p>
+                </div>
+                <div class="text-slate-600 group-hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </div>
             </div>
-            <div class="ml-6 flex-grow">
-                <h3 class="text-xl font-bold mb-1">我的业务 (Business)</h3>
-                <p class="text-slate-400 text-sm">AI 咨询 / 增长策略 / 资源合作</p>
-            </div>
-            <!-- 统一箭头 (新增) -->
-            <div class="text-slate-600 group-hover:text-white transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                </svg>
-            </div>
+
+            <!-- 3. 美股投资 -->
+            <a href="U.S. Stocks.html" class="glass-card flex items-center p-6 rounded-3xl group"> 
+                <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-400">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                    </svg>
+                </div>
+                <div class="ml-6 flex-grow">
+                    <h3 class="text-xl font-bold mb-1">美股投资 (U.S.Stocks)</h3>
+                    <p class="text-slate-400 text-sm">能力架构 / AI 工作流底层逻辑</p>
+                </div>
+                <div class="text-slate-600 group-hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </div>
+            </a>
+
+            <!-- 4. 我的故事 -->
+            <a href="#" class="glass-card flex items-center p-6 rounded-3xl group">
+                <div class="w-14 h-14 bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-400">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+                <div class="ml-6 flex-grow">
+                    <h3 class="text-xl font-bold text-white mb-1">我的故事 (Story)</h3>
+                    <p class="text-slate-400 text-sm">从财务审计到 26w 店铺操盘手</p>
+                </div>
+                <div class="text-slate-600 group-hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </div>
+            </a>
+
         </div>
+    </section>
 
-        <!-- 3. 美股投资 -->
-        <a href="U.S. Stocks.html" class="glass-card flex items-center p-6 rounded-3xl group"> 
-            <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-400">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
-                </svg>
-            </div>
-            <div class="ml-6 flex-grow">
-                <h3 class="text-xl font-bold mb-1">美股投资 (U.S.Stocks)</h3>
-                <p class="text-slate-400 text-sm">能力架构 / AI 工作流底层逻辑</p>
-            </div>
-            <!-- 统一箭头 -->
-            <div class="text-slate-600 group-hover:text-white transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                </svg>
-            </div>
-        </a>
-
-        <!-- 4. 我的故事 -->
-        <a href="#" class="glass-card flex items-center p-6 rounded-3xl group">
-            <div class="w-14 h-14 bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-400">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                </svg>
-            </div>
-            <div class="ml-6 flex-grow">
-                <h3 class="text-xl font-bold text-white mb-1">我的故事 (Story)</h3>
-                <p class="text-slate-400 text-sm">从财务审计到 26w 店铺操盘手</p>
-            </div>
-            <!-- 统一箭头 -->
-            <div class="text-slate-600 group-hover:text-white transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                </svg>
-            </div>
-        </a>
-
-    </div>
-</section>
-    <!-- 4. 项目展示区 -->
+    <!-- 5. 项目展示区 -->
     <section id="projects" class="py-24 px-6 space-y-32">
         <header class="text-center mb-16">
             <h2 class="text-4xl md:text-5xl font-bold tracking-widest uppercase">核心项目 (Selected Works)</h2>
@@ -343,7 +387,7 @@
         </div>
     </section>
 
-    <!-- 5. 联系/底部区 -->
+    <!-- 6. 联系/底部区 -->
     <section id="contact" class="relative py-32 px-4 text-center overflow-hidden">
         <!-- 装饰光晕 -->
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-blue-600/10 blur-[120px] rounded-full -z-10"></div>
@@ -370,7 +414,7 @@
 
         <footer class="mt-40 pb-10 border-t border-white/5 pt-10">
             <p class="text-[10px] tracking-[0.3em] text-gray-600 uppercase">
-                © 2025 LEO BAI. BUILT WITH PASSION & AI.
+                © 2025 GABRIEL LI. BUILT WITH PASSION & AI.
             </p>
         </footer>
     </section>
