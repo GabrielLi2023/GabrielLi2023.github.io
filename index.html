@@ -14,7 +14,7 @@
             overflow-x: hidden;
         }
 
-        /* 统一背景装饰 */
+        
         /* ---------------- 上半部：世界地图 (保持不变) ---------------- */
         .map-section {
             height: 45vh;
@@ -43,8 +43,17 @@
             pointer-events: none;
         }
 
-        
+        .global-map-bg {
+            position: fixed;
+            inset: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/world-map.png');
+            opacity: 0.1;
+            z-index: -1;
+            pointer-events: none;
+            filter: invert(1);
+        }
 
+        /* 统一背景装饰 */
         .city-glow {
             position: fixed;
             top: 0;
