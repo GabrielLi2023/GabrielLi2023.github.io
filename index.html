@@ -26,21 +26,21 @@
             overflow: hidden;
         }
 
-        .fixed-global-bg img {
+         .fixed-global-bg img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             opacity: 1;
-            /* 关键：移除 grayscale(100%)，保留色彩 */
-            filter: brightness(0.9) contrast(1.3) hue-rotate(10deg); 
+            /* 稍微降低一点饱和度，防止太刺眼 */
+            filter: saturate(0.8) brightness(0.8);
         }
 
         /* 全局深色遮罩：防止背景太花影响文字阅读 */
         .bg-overlay {
             position: absolute;
             inset: 0;
-            /* 使用深蓝色遮罩，而不是纯黑，增强氛围 */
-            background: linear-gradient(to bottom, rgba(6, 11, 20, 0.8), rgba(6, 7, 10, 0.9));
+            /* 遮罩非常薄，只为了让白色文字能看清 */
+            background: rgba(0, 0, 0, 0.5); 
         }
 
         /* 全局网格纹理 */
