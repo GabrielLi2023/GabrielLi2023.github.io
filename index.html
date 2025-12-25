@@ -42,6 +42,25 @@
             pointer-events: none;
         } 
 
+        /* 鼠标悬停效果 */
+        .knowledge-card:hover {
+            transform: translateY(-10px); /* 稍微上浮 */
+            background: rgba(30, 41, 59, 0.7);
+            border-color: rgba(59, 130, 246, 0.5); /* 蓝色边框 */
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(59, 130, 246, 0.15);
+            z-index: 10;
+        }
+
+        .card-number {
+            font-size: 3rem;
+            font-weight: 900;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: rgba(255,255,255,0.03);
+            pointer-events: none;
+            transition: color 0.3s;
+        }
         /* 玻璃拟态卡片 */
         .glass-card {
             background: rgba(15, 23, 42, 0.6);
@@ -68,13 +87,46 @@
         ::-webkit-scrollbar-track { background: #06070a; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+
+        /* ---------------- 动画点缀 (保持) ---------------- */
+        .pulse-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #3b82f6;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #3b82f6;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
     </style>
 </head>
 <body>
 
-    <!-- 全球背景层 -->
-    <div class="global-map-bg"></div>
-    <div class="city-glow"></div>
+
+    <!-- 1. 上半部：世界地图 -->
+    <section class="map-section flex flex-col items-center justify-center">
+        <!-- 地图图片层 -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" alt="World Map" class="world-map-img">
+            <div class="absolute inset-0 bg-blue-900/20 mix-blend-color"></div>
+        </div>
+        
+        <!-- 网格装饰 -->
+        <div class="grid-overlay z-0"></div>
+
+        <!-- 动态点 -->
+        <div class="pulse-dot" style="top: 30%; left: 20%;"></div>
+        <div class="pulse-dot" style="top: 45%; left: 50%; animation-delay: 0.5s;"></div>
+        <div class="pulse-dot" style="top: 35%; left: 80%; animation-delay: 1s;"></div>
+        <div class="pulse-dot" style="top: 60%; left: 30%; animation-delay: 1.5s;"></div>
+
+   
 
     <!-- 1. 导航栏 -->
     <header class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center backdrop-blur-md border-b border-white/5">
