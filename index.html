@@ -30,17 +30,19 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* 保持科技蓝全息风格滤镜 */
-            filter: brightness(0.6) contrast(1.5);
-            mix-blend-mode: luminosity; 
-            opacity: 0.7;
+            /* 移除 opacity: 0.5，改由滤镜控制明暗 */
+            opacity: 1; 
+            /* 降低亮度，提高对比度，保持黑白 */
+            filter: grayscale(100%) brightness(0.8) contrast(1.2); 
+            mix-blend-mode: normal; /* 移除混合模式，还原图片本色 */
         }
 
         /* 全局深色遮罩：防止背景太花影响文字阅读 */
         .bg-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(6, 7, 10, 0.7); /* 0.85 不透明度，可根据需要调整深浅 */
+            /* 将遮罩浓度从 0.85 降到 0.7，让图片透出来更多 */
+            background: rgba(6, 7, 10, 0.7); 
         }
 
         /* 全局网格纹理 */
