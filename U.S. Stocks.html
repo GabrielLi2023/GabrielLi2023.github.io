@@ -17,32 +17,27 @@
             flex-direction: column;
         }
 
-        /* ---------------- 上半部：世界地图 ---------------- */
-        .map-section {
+        /* ---------------- 上半部：背景图片区域 ---------------- */
+        .top-section {
             height: 45vh;
             position: relative;
             overflow: hidden;
-            background: radial-gradient(circle at center, #111827 0%, #06070a 100%);
+            background-color: #111827;
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .world-map-img {
+        .header-bg-img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            opacity: 0.6;
-            filter: grayscale(100%) contrast(1.2) brightness(0.8);
-            mix-blend-mode: overlay; 
+            object-fit: cover; /* 确保图片填满区域且不变形 */
+            object-position: center;
+            opacity: 0.9;
+            transition: transform 10s ease;
         }
-
-        .grid-overlay {
-            position: absolute;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            pointer-events: none;
+        
+        /* 简单的图片缓慢放大效果 */
+        .top-section:hover .header-bg-img {
+            transform: scale(1.05);
         }
 
         /* ---------------- 下半部：静态三卡片布局 ---------------- */
@@ -106,43 +101,24 @@
             color: rgba(59, 130, 246, 0.1);
         }
 
-        /* ---------------- 动画点缀 ---------------- */
-        .pulse-dot {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: #3b82f6;
-            border-radius: 50%;
-            box-shadow: 0 0 15px #3b82f6;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(3); opacity: 0; }
-        }
-
     </style>
 </head>
 <body>
 
-    <!-- 1. 上半部：世界地图 -->
-    <section class="map-section flex flex-col items-center justify-center">
-        <!-- 地图图片层 -->
+    <!-- 1. 上半部：背景图片展示区 -->
+    <section class="top-section flex flex-col items-center justify-center">
+        <!-- 背景图片层 -->
         <div class="absolute inset-0 z-0">
-            <img src="https://raw.githubusercontent.com/GabrielLi2023/GabrielLi2023.github.io/main/YouCanOnlyMakeMoneyWithinYourKnowledge.jpg" alt="Avatar" class="w-full h-full rounded-full bg-slate-800 object-cover">
-            <div class="absolute inset-0 bg-blue-900/20 mix-blend-color"></div>
+            <!-- 修改：使用了普通的矩形展示，移除了 avatar/rounded-full 样式，移除了滤镜 -->
+            <img src="https://raw.githubusercontent.com/GabrielLi2023/GabrielLi2023.github.io/main/YouCanOnlyMakeMoneyWithinYourKnowledge.jpg" 
+                 alt="Knowledge Background" 
+                 class="header-bg-img">
+            
+            <!-- 黑色遮罩，确保文字可读 -->
+            <div class="absolute inset-0 bg-black/50"></div>
         </div>
         
-        <!-- 网格装饰 -->
-        <div class="grid-overlay z-0"></div>
-
-        <!-- 动态点 -->
-        <div class="pulse-dot" style="top: 30%; left: 20%;"></div>
-        <div class="pulse-dot" style="top: 45%; left: 50%; animation-delay: 0.5s;"></div>
-        <div class="pulse-dot" style="top: 35%; left: 80%; animation-delay: 1s;"></div>
-        <div class="pulse-dot" style="top: 60%; left: 30%; animation-delay: 1.5s;"></div>
-
-        <!-- 标题 -->
+        <!-- 标题内容 (保持在最上层 z-10) -->
         <div class="relative z-10 text-center glass-card px-8 py-4 rounded-full border border-white/10 mt-12">
             <h1 class="text-2xl font-bold tracking-widest text-white">KNOWLEDGE CORE</h1>
             <p class="text-[10px] text-blue-400 mt-1 uppercase tracking-[0.3em]">3 Key Pillars</p>
@@ -171,7 +147,7 @@
                 title: 'Global Expansion',
                 desc: '深入剖析跨境电商的市场准入策略。通过数据驱动的选品逻辑与本地化运营模型，构建不可复制的品牌护城河。',
                 time: 'Core Module',
-                // 【修改点 1】在这里添加了跳转链接
+                // 【修改点】更新了跳转链接
                 link: 'https://www.notion.so/TEST-2d4caadcda2180039c76f5ad183792a1?source=copy_link'
             },
             {
@@ -180,7 +156,7 @@
                 title: 'Automation Workflow',
                 desc: '利用 AIGC 技术重构内容生产与客户服务流程。实现 24/7 全天候响应与千人千面的营销触达，效率提升 500%。',
                 time: 'Tech Stack',
-                link: '' // 其他卡片可以留空
+                link: '' // 其他卡片留空
             },
             {
                 id: '03',
@@ -197,14 +173,13 @@
         // 渲染 3 张卡片
         function renderCards() {
             track.innerHTML = modules.map(card => {
-                // 【修改点 2】检查是否有链接，如果有则生成 onclick 事件
+                // 检查是否有链接，如果有则生成 onclick 事件
                 const clickAction = card.link 
                     ? `onclick="window.open('${card.link}', '_blank')"` 
                     : '';
                 
-                // 为了用户体验，如果有链接，鼠标样式更明确（虽然已经有 cursor-pointer）
-                // 并且添加 title 提示
-                const hoverTitle = card.link ? 'title="Click to open Notion notes"' : '';
+                // 鼠标悬停提示
+                const hoverTitle = card.link ? 'title="点击跳转至 Notion 笔记"' : '';
 
                 return `
                 <div class="knowledge-card group cursor-pointer" ${clickAction} ${hoverTitle}>
