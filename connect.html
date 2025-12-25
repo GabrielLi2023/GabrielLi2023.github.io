@@ -12,7 +12,7 @@
             background-color: #05070a;
             color: white;
             margin: 0;
-            overflow: hidden;
+            overflow-x: hidden; /* 防止横向滚动 */
         }
 
         /* 模拟背景：城市夜景模糊图 */
@@ -62,98 +62,159 @@
             border-color: rgba(255, 255, 255, 0.1);
             transform: translateY(-2px);
         }
+
+        /* 复制成功的提示动画 */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #1aad19;
+            color: #fff;
+            text-align: center;
+            border-radius: 50px;
+            padding: 16px;
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen">
+<body class="flex items-center justify-center min-h-screen py-10">
 
     <!-- 背景装饰 -->
     <div class="bg-container"></div>
     <div class="map-overlay"></div>
     <div class="glow"></div>
 
+    <!-- 复制成功提示 -->
+    <div id="toast">微信号已复制到剪贴板</div>
+
     <!-- 主体内容 -->
     <main class="w-full max-w-2xl px-6 relative z-10">
         
         <!-- 顶部导航/标题 -->
         <header class="mb-10">
-            <a href="index.html" class="flex items-center text-sm text-gray-400 hover:text-white transition-colors mb-6 group">
-        <svg class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-        </svg>
-    返回首页
-    </a>
-    <a href="connect.html" class="glass-card flex items-center p-6 rounded-3xl group">
-    <h1 class="text-4xl font-bold mb-3 flex items-center">
-        链接我<span class="text-blue-500 ml-1">.</span>
-    </h1>
-            <p class="text-gray-400 text-base">
-                随时欢迎交流 AI 落地、跨境增长或职业发展。
-            </p>
+            <a href="index.html" class="inline-flex items-center text-sm text-gray-400 hover:text-white transition-colors mb-6 group">
+                <svg class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                返回首页
+            </a>
+            
+            <!-- 标题卡片 (修复了标签闭合问题) -->
+            <div class="glass-card flex flex-col p-8 rounded-3xl">
+                <h1 class="text-4xl font-bold mb-3 flex items-center text-white">
+                    链接我<span class="text-blue-500 ml-1">.</span>
+                </h1>
+                <p class="text-gray-400 text-base leading-relaxed">
+                    随时欢迎交流 AI 落地、跨境增长或职业发展。
+                </p>
+            </div>
         </header>
 
         <!-- 联系方式列表容器 -->
         <div class="space-y-4">
  
-            
-            <!-- 微信卡片 -->
-            <div class="glass-card flex items-center justify-between p-5 rounded-3xl cursor-pointer">
-                <div class="flex items-center">
-                    <div class="w-12 h-12 bg-[#1aad19]/20 rounded-2xl flex items-center justify-center mr-5">
+            <!-- 微信卡片 (添加了点击复制功能) -->
+            <div onclick="copyToClipboard('Gabriel13650892023')" class="glass-card flex items-center justify-between p-5 rounded-3xl cursor-pointer group select-none">
+                <div class="flex items-center overflow-hidden">
+                    <div class="w-12 h-12 flex-shrink-0 bg-[#1aad19]/20 rounded-2xl flex items-center justify-center mr-5 transition-colors group-hover:bg-[#1aad19]/30">
                         <svg class="w-7 h-7 text-[#1aad19]" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M8.38 4.402c-4.14 0-7.5 3.018-7.5 6.736 0 2.016 1 3.822 2.574 5.094l-.654 2.41 2.37-1.18c.96.284 1.99.434 3.07.434.34 0 .68-.016 1.01-.05a6.416 6.416 0 0 1-.15-1.38c0-3.53 3.04-6.39 6.78-6.39.4 0 .79.032 1.17.094C16.2 6.942 12.69 4.402 8.38 4.402zm3.36 3.124a.944.944 0 0 1 .94.94.944.944 0 0 1-.94.94.944.944 0 0 1-.94-.94.944.944 0 0 1 .94-.94zm-5.4 0a.944.944 0 0 1 .94.94.944.944 0 0 1-.94.94.944.944 0 0 1-.94-.94.944.944 0 0 1 .94-.94zM18.14 11.53c-3.1 0-5.63 2.26-5.63 5.05 0 1.51.75 2.87 1.93 3.82l-.49 1.8 1.78-.88c.72.21 1.5.33 2.31.33 3.1 0 5.63-2.26 5.63-5.05 0-2.79-2.52-5.05-5.63-5.05zm-2.2 2.34a.71.71 0 0 1 .71.71.71.71 0 0 1-.71.71.71.71 0 0 1-.71-.71.71.71 0 0 1 .71-.71zm4.2 0a.71.71 0 0 1 .71.71.71.71 0 0 1-.71.71.71.71 0 0 1-.71-.71.71.71 0 0 1 .71-.71z"/>
                         </svg>
                     </div>
-                    <div>
+                    <div class="min-w-0"> <!-- min-w-0 确保 flex 子项正确截断 -->
                         <h3 class="font-semibold text-white text-lg">微信 (WeChat)</h3>
-                        <p class="text-sm text-gray-400">ID: Gabriel13650892023</p>
+                        <p class="text-sm text-gray-400 truncate pr-2">ID: Gabriel13650892023</p>
                     </div>
                 </div>
-                <div class="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs text-gray-400 hover:text-white transition-colors">
-                    点击扫码
+                <div class="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs text-gray-400 group-hover:bg-white/10 group-hover:text-white transition-colors whitespace-nowrap">
+                    点击复制
                 </div>
             </div>
-<!-- Twitter/X 卡片 -->
-<a href="https://x.com/GabrielLi171732" target="_blank" class="glass-card flex items-center justify-between p-5 rounded-3xl cursor-pointer transition-transform hover:scale-[1.02]">
-    <div class="flex items-center">
-        <div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center mr-5 border border-white/10">
-            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
-            </svg>
-        </div>
-        <div>
-            <h3 class="font-semibold text-white text-lg">推特 (X / Twitter)</h3>
-            <p class="text-sm text-gray-400">GabrielLi171732 | 流量实验与思考</p>
-        </div>
-    </div>
-    <div class="text-gray-500 hover:text-white transition-colors">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-        </svg>
-    </div>
-</a>
 
-            <!-- Email 卡片 -->
-            <div class="glass-card flex items-center justify-between p-5 rounded-3xl cursor-pointer">
-                <div class="flex items-center">
-                    <div class="w-12 h-12 bg-blue-600/20 rounded-2xl flex items-center justify-center mr-5">
+            <!-- Twitter/X 卡片 -->
+            <a href="https://x.com/GabrielLi171732" target="_blank" class="glass-card flex items-center justify-between p-5 rounded-3xl cursor-pointer transition-transform hover:scale-[1.02] group">
+                <div class="flex items-center overflow-hidden">
+                    <div class="w-12 h-12 flex-shrink-0 bg-black rounded-2xl flex items-center justify-center mr-5 border border-white/10 group-hover:border-white/30 transition-colors">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <h3 class="font-semibold text-white text-lg">推特 (X / Twitter)</h3>
+                        <p class="text-sm text-gray-400 truncate pr-2">GabrielLi171732 | 流量实验与思考</p>
+                    </div>
+                </div>
+                <div class="text-gray-500 group-hover:text-white transition-colors flex-shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    </svg>
+                </div>
+            </a>
+
+            <!-- Email 卡片 (改为可点击的链接) -->
+            <a href="mailto:gabrielli13650892023@gmail.com" class="glass-card flex items-center justify-between p-5 rounded-3xl cursor-pointer transition-transform hover:scale-[1.02] group">
+                <div class="flex items-center overflow-hidden">
+                    <div class="w-12 h-12 flex-shrink-0 bg-blue-600/20 rounded-2xl flex items-center justify-center mr-5 group-hover:bg-blue-600/30 transition-colors">
                         <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                         </svg>
                     </div>
-                    <div>
+                    <div class="min-w-0">
                         <h3 class="font-semibold text-white text-lg">邮箱 (Email)</h3>
-                        <p class="text-sm text-gray-400">gabrielli13650892023@gmail.com</p>
+                        <p class="text-sm text-gray-400 truncate pr-2">gabrielli13650892023@gmail.com</p>
                     </div>
                 </div>
-                <div class="text-gray-500 hover:text-blue-500 transition-colors">
+                <div class="text-gray-500 group-hover:text-blue-500 transition-colors flex-shrink-0">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                     </svg>
                 </div>
-            </div>
+            </a>
 
         </div>
     </main>
 
+    <script>
+        function copyToClipboard(text) {
+            // 创建临时的 textarea 元素来执行复制
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed'; // 避免页面滚动
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast();
+            } catch (err) {
+                console.error('复制失败', err);
+                alert('复制失败，请手动选择复制');
+            }
+            
+            document.body.removeChild(textarea);
+        }
+
+        function showToast() {
+            const toast = document.getElementById("toast");
+            toast.className = "show";
+            setTimeout(function(){ 
+                toast.className = toast.className.replace("show", ""); 
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
