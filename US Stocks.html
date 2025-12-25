@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gabriel | 美股投资策略 (U.S. Stocks)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+SC:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            background-color: #06070a;
+            color: white;
+            overflow: hidden; /* 整体页面禁止滚动 */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ---------------- 上半部：股市行情视觉区 ---------------- */
+        .hero-section {
+            height: 40vh; 
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            background: #111827;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            z-index: 10;
+        }
+
+        .hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+            /* 调整滤镜：增加一点对比度，体现金融数据的严谨感 */
+            filter: contrast(1.2) brightness(0.8) saturate(1.1);
+            transition: transform 10s ease;
+        }
+        
+        .hero-section:hover .hero-img {
+            transform: scale(1.05);
+        }
+
+        /* 走势图网格装饰 */
+        .grid-overlay {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            mask-image: linear-gradient(to bottom, black, transparent);
+        }
+
+        /* ---------------- 下半部：知识方块滚动区 ---------------- */
+        .content-section {
+            flex-grow: 1;
+            position: relative;
+            overflow-y: auto; /* 允许垂直滚动 */
+            background: radial-gradient(circle at top, #061e16 0%, #06070a 80%); /* 背景微调为深绿色调 */
+            /* 自定义滚动条样式 */
+            scrollbar-width: thin;
+            scrollbar-color: #047857 #06070a;
+        }
+
+        .content-section::-webkit-scrollbar {
+            width: 6px;
+        }
+        .content-section::-webkit-scrollbar-track {
+            background: #06070a;
+        }
+        .content-section::-webkit-scrollbar-thumb {
+            background-color: #047857;
+            border-radius: 20px;
+        }
+
+        .cards-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 4vw;
+            display: grid;
+            /* 响应式网格：大屏3列，中屏2列，小屏1列 */
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 1.5rem;
+        }
+
+        /* ---------------- 方块样式 ---------------- */
+        .invest-block {
+            background: rgba(6, 78, 59, 0.15); /* 深绿色背景底色 */
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 悬停高亮效果 */
+        .invest-block:hover {
+            transform: translateY(-5px);
+            background: rgba(6, 95, 70, 0.3);
+            border-color: rgba(52, 211, 153, 0.4); /* 亮绿色边框 */
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.8);
+        }
+
+        /* 内部K线走势装饰线 */
+        .invest-block::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #34d399, transparent);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+        .invest-block:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* ---------------- 动画点缀 (Ticker效果) ---------------- */
+        .ticker-line {
+            position: absolute;
+            top: 20%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: rgba(255,255,255,0.05);
+        }
+        .moving-dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #34d399;
+            border-radius: 50%;
+            top: -1.5px;
+            animation: moveRight 5s linear infinite;
+        }
+        @keyframes moveRight {
+            0% { left: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { left: 100%; opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 1. 上半部：金融/K线图插画 -->
+    <section class="hero-section flex flex-col items-center justify-center">
+        <!-- 背景图：使用更具金融属性的K线/数据图 -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1611974765270-ca1258634369?q=80&w=2064&auto=format&fit=crop" alt="Stock Market Chart" class="hero-img">
+            <div class="absolute inset-0 bg-gray-900/70 mix-blend-multiply"></div>
+        </div>
+        
+        <!-- 网格装饰 -->
+        <div class="grid-overlay z-0"></div>
+
+        <!-- 模拟数据流动的线条 -->
+        <div class="ticker-line" style="top: 30%;">
+            <div class="moving-dot" style="animation-delay: 0s;"></div>
+        </div>
+        <div class="ticker-line" style="top: 70%;">
+            <div class="moving-dot" style="animation-delay: 2.5s;"></div>
+        </div>
+
+        <!-- 标题 -->
+        <div class="relative z-10 text-center">
+            <div class="inline-block glass-card px-8 py-3 rounded-full border border-emerald-500/30 bg-black/40 backdrop-blur-md">
+                <h1 class="text-3xl font-bold tracking-widest text-white">MARKET ALPHA</h1>
+            </div>
+            <p class="text-xs text-emerald-400 mt-3 uppercase tracking-[0.4em] font-bold">Invest within your knowledge</p>
+        </div>
+        
+        <!-- 返回导航 -->
+        <a href="index.html" class="absolute top-6 left-6 z-20 text-sm text-gray-400 hover:text-white flex items-center gap-2 transition-colors group">
+            <div class="p-1.5 rounded-full bg-white/5 group-hover:bg-white/10 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            </div>
+            <span>Back to Core</span>
+        </a>
+    </section>
+
+    <!-- 2. 下半部：投资知识方块矩阵 -->
+    <section class="content-section">
+        <div class="cards-container" id="stockTrack">
+            <!-- JS 生成内容 -->
+        </div>
+        
+        <!-- 底部 -->
+        <div class="text-center pb-8 pt-4">
+            <p class="text-[10px] text-slate-500 uppercase tracking-widest">Market Data Delayed • Gabriel Investment</p>
+        </div>
+    </section>
+
+    <script>
+        // 定义美股投资相关的知识模块数据
+        const stockModules = [
+            {
+                tag: 'FUNDAMENTAL',
+                title: 'Value Investing',
+                desc: '透视财报核心数据（EPS, ROE, Free Cash Flow）。像巴菲特一样分析企业护城河，寻找被市场低估的优质资产。',
+                icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' // Document icon
+            },
+            {
+                tag: 'TECHNICAL',
+                title: 'Trend Analysis',
+                desc: '掌握技术面语言（K线形态, MA均线, MACD）。识别趋势反转信号，制定右侧交易的买入与止损策略。',
+                icon: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' // Trending up icon
+            },
+            {
+                tag: 'MACRO',
+                title: 'Fed Policy',
+                desc: '宏观经济与美联储货币政策。理解 CPI 通胀数据、利率决议如何引爆市场波动，在大周期中顺势而为。',
+                icon: 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z' // Globe icon
+            },
+            {
+                tag: 'OPTIONS',
+                title: 'Derivatives',
+                desc: '期权策略进阶（Covered Call, Put Selling）。利用非线性工具对冲持仓风险，或在横盘市场中增强收益。',
+                icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z' // Coin/Currency icon
+            },
+            {
+                tag: 'ETF',
+                title: 'Asset Allocation',
+                desc: '构建全天候资产组合。合理配置 SPY, QQQ 与债券黄金，利用相关性对冲降低波动，实现复利增长。',
+                icon: 'M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z' // Pie chart icon
+            },
+            {
+                tag: 'PSYCHOLOGY',
+                title: 'Risk Control',
+                desc: '交易心理学与仓位管理。克服贪婪与恐惧，严格执行凯利公式与 2% 止损原则，活下来才是一切。',
+                icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z' // Shield icon
+            }
+        ];
+
+        const track = document.getElementById('stockTrack');
+
+        function renderStockGrid() {
+            track.innerHTML = stockModules.map((item, index) => `
+                <div class="invest-block group cursor-pointer" onclick="window.open('https://www.notion.so', '_blank')">
+                    <!-- 顶部标签与图标 -->
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-[10px] font-bold px-2 py-1 rounded bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 tracking-wider">
+                            ${item.tag}
+                        </span>
+                        <div class="text-slate-500 group-hover:text-emerald-400 transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="${item.icon}"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <!-- 标题 -->
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-emerald-300 transition-colors">${item.title}</h3>
+                    
+                    <!-- 描述 -->
+                    <p class="text-sm text-slate-400 leading-relaxed flex-grow">
+                        ${item.desc}
+                    </p>
+                    
+                    <!-- 底部箭头 -->
+                    <div class="mt-4 flex justify-end">
+                        <span class="text-xs text-slate-600 group-hover:text-white transition-colors flex items-center gap-1 font-semibold">
+                            Read Note 
+                            <svg class="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        renderStockGrid();
+    </script>
+</body>
+</html>
